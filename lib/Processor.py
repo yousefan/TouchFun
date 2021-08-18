@@ -30,9 +30,9 @@ class Processor:
 
     @staticmethod
     def detect_ball(img):
-        circles = cv2.HoughCircles(img, cv2.HOUGH_GRADIENT, 1, 20,
-                                   param1=50, param2=30,
-                                   minRadius=1, maxRadius=200)
+        circles = cv2.HoughCircles(img, cv2.HOUGH_GRADIENT_ALT, 1, 20,
+                                   param1=50, param2=0.84,
+                                   minRadius=15, maxRadius=200)
         if circles is not None:
             circles = np.uint16(np.around(circles))
             circle = circles[0, :]
