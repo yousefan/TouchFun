@@ -11,7 +11,6 @@ class Calibration:
 
     def on_click_select_corner(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
-            cv2.circle(self.cam_img, (x, y), 5, (255, 255, 255), -1)
             self.corners.append([x, y])
 
     def calibrate(self):
@@ -22,7 +21,9 @@ class Calibration:
         rows = cols = 0
         while len(self.corners) < 4:
             ret, self.cam_img = cap.read()
+            # print(self.cam_img.shape)
             self.cam_img = imutils.resize(self.cam_img)
+            self.draw_calib_corner_circles()
             cv2.imshow('camera calibration', self.cam_img)
             k = cv2.waitKey(20) & 0xFF
             if k == 27:
@@ -31,6 +32,9 @@ class Calibration:
         cap.release()
         cv2.destroyWindow('camera calibration')
 
+    def draw_calib_corner_circles(self):
+        for corner in self.corners:
+            cv2.circle(self.cam_img, (corner[0], corner[1]), 4, (255, 0, 0), -1)
 
     def read_calibration(self):
         self.corners = loadtxt('calib.csv', delimiter=',').astype('int')
