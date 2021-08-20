@@ -3,11 +3,12 @@ import numpy as np
 
 
 class Processor:
-    def __init__(self, corners):
+    def __init__(self, corners, circle_threshold):
         self.corners = corners
         self.pts1 = np.float32(self.corners)
         self.pts2 = np.float32([[0, 0], [640, 0], [0, 480], [640, 480]])
         self.M = cv2.getPerspectiveTransform(self.pts1, self.pts2)
+        self.circle_threshold = circle_threshold
 
     def preprocess(self, img, blur=True):
         img = cv2.warpPerspective(img, self.M, (img.shape[1], img.shape[0]))
@@ -28,11 +29,11 @@ class Processor:
         mask_edge = cv2.Canny(gray, 50, 150)
         return mask_edge
 
-    @staticmethod
-    def detect_ball(img):
+    def detect_ball(self, img):
         circles = cv2.HoughCircles(img, cv2.HOUGH_GRADIENT_ALT, 1, 20,
-                                   param1=50, param2=0.84,
+                                   param1=50, param2=self.circle_threshold,
                                    minRadius=15, maxRadius=200)
+
         if circles is not None:
             circles = np.uint16(np.around(circles))
             circle = circles[0, :]

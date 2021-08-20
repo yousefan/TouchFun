@@ -1,6 +1,6 @@
-from lib.Calibration import Calibration
-from lib.Processor import Processor
 from Games.TicTacToc import TicTacToc
+from Games.Basketball import Basketball
 cam_id = 1
-xo = TicTacToc(cam_id)
-xo.play()
+# game = Basketball(cam_id)
+game = TicTacToc(cam_id)
+game.play()

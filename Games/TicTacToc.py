@@ -64,7 +64,7 @@ class TicTacToc:
 
                 if not cal:
                     self.calib.calibrate()
-                    self.processor = Processor(self.calib.corners)
+                    self.processor = Processor(self.calib.corners, 0.84)
                     cal = True
                 ret, img = cap.read()
                 img, mask_edge, blurred = self.processor.preprocess(img, False)
@@ -93,11 +93,11 @@ class TicTacToc:
                     if self.turn == "x":
                         self.hit_cells.append((x_img, y_img, self.x_image))
                         game_array[i][j] = (x_lower, x_upper, y_lower, y_upper, x_img, y_img, "x", False)
-                        self.turn = "o"
+                        self.turn = "▲"
 
-                    elif self.turn == "o":
+                    elif self.turn == "▲":
                         self.hit_cells.append((x_img, y_img, self.o_image))
-                        game_array[i][j] = (x_lower, x_upper, y_lower, y_upper, x_img, y_img, "o", False)
+                        game_array[i][j] = (x_lower, x_upper, y_lower, y_upper, x_img, y_img, "▲", False)
                         self.turn = "x"
         print("turn: " + self.turn)
         return game_array
